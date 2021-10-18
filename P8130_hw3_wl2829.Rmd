@@ -1,0 +1,35 @@
+---
+title: "P8130_hw3_wl2829"
+author: "Wentong"
+date: "10/15/2021"
+output: pdf_document
+---
+## Problem 1
+
+Read the dataset and save the sample.
+```{r}
+population = read.csv("./ce8130entire.csv")
+library(dplyr)
+set.seed(1000) 
+A = population %>%
+  group_by(sex) %>%
+  sample_n(100)
+```
+
+## Problem 2
+
+Save a separate sample.
+```{r}
+set.seed(1000) 
+B = population %>%
+  group_by(sex) %>%
+  sample_n(30)
+```
+
+
+
+
+
+
+
+
