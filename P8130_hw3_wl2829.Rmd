@@ -26,10 +26,71 @@ B = population %>%
   sample_n(30)
 ```
 
+## Problem 3
+```{r}
+boxplot(A$totchg ~ A$sex, names=c("Men","Women"), ylab ="EC cost in $USD", xlab ="Sex")
+library(ggplot2)
 
+ggplot(A, aes(x = totchg)) +
+geom_histogram(aes(color = sex, fill = sex),
+position = "identity", bins = 30, alpha = 0.4)
+```
 
+## Problem 4
+```{r}
+A$sample = "Sample A"
+B$sample = "Sample B"
+A_B = rbind(A, B)
 
+library(Rmisc)
 
+A_B_summary <- summarySE(A_B, measurevar="totchg", groupvars=c("sex","sample"))
+A_B_summary$sex <- as.factor(A_B_summary$sex)
+p_dodge = position_dodge(0.1) # move them .05 to the left and right
+plot = ggplot(A_B_summary, aes(x=sample, y=totchg, colour=sex)) +
+geom_errorbar(aes(ymin=totchg-ci, ymax=totchg+ci), width=.1, position=p_dodge) +
+geom_point(position=p_dodge)
+```
+How do they differ, which confidence intervals are wider?
+Explain why.
+
+## Problem 5
+```{r}
+var.test(totchg ~ sex, data = A)
+```
+
+## Problem 6
+```{r}
+A_men = 
+  A %>% 
+  filter(sex == 1)
+
+A_women = 
+  A %>% 
+  filter(sex == 2)
+
+t.test(A_men$totchg, A_women$totchg, paired = TRUE, alternative = "l")
+```
+
+## Problem 7
+
+```{r}
+res <- t.test(totchg ~ sex, data = A, var.equal = FALSE)
+```
+
+## Problem 8
+```{r}
+population_man = 
+  population %>% 
+  filter(sex == 1)
+
+population_woman = 
+  population %>% 
+  filter(sex == 2)
+man_mean = mean(population_man$totchg)
+woman_mean = mean(population_woman$totchg)
+mean_dif = man_mean - woman_mean
+```
 
 
 
