@@ -27,16 +27,26 @@ B = population %>%
 ```
 
 ## Problem 3
+Display the distribution of CE cost in $USD separately for men and women using side-by-side boxplots and histograms.
+
+Side-by-side box plots
 ```{r}
 boxplot(A$totchg ~ A$sex, names=c("Men","Women"), ylab ="EC cost in $USD", xlab ="Sex")
-library(ggplot2)
+```
 
-ggplot(A, aes(x = totchg)) +
-geom_histogram(aes(color = sex, fill = sex),
-position = "identity", bins = 30, alpha = 0.4)
+Histograms
+```{r}
+library(ggplot2)
+A %>% 
+  mutate(sex = recode(sex, `1` = "Man", `2` = "Woman")) %>% 
+  ggplot(aes(x = totchg, fill = sex)) +
+  geom_histogram(position = "identity", bins = 30, alpha = 0.4)
 ```
 
 ## Problem 4
+
+Calculate the mean CE cost and 95% confidence interval separately for men and women in sample “A” as
+well as sample “B”.
 ```{r}
 A$sample = "Sample A"
 B$sample = "Sample B"
@@ -50,16 +60,32 @@ p_dodge = position_dodge(0.1) # move them .05 to the left and right
 plot = ggplot(A_B_summary, aes(x=sample, y=totchg, colour=sex)) +
 geom_errorbar(aes(ymin=totchg-ci, ymax=totchg+ci), width=.1, position=p_dodge) +
 geom_point(position=p_dodge)
+
+plot
 ```
-How do they differ, which confidence intervals are wider?
-Explain why.
+The confidence interval of B is wider especially man, considering it has a smaller sample.
 
 ## Problem 5
+Conduct test of equality of variance of CE cost among men vs women in sample A
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+
 ```{r}
 var.test(totchg ~ sex, data = A)
 ```
+p-value = 0.2797 > 0.05
+We cannot reject the null hypothesis at significance level 0.05. Thus, two samples have equal variance.
 
 ## Problem 6
+Using sample “A”, calculate the difference between the mean CE costs for men and women.
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
 ```{r}
 A_men = 
   A %>% 
@@ -69,16 +95,31 @@ A_women =
   A %>% 
   filter(sex == 2)
 
-t.test(A_men$totchg, A_women$totchg, paired = TRUE, alternative = "l")
+t.test(A_men$totchg, A_women$totchg, alternative = "two.sided", var.equal = TRUE)
 ```
+The difference between the means is 
+7449.33 - 6941.84 = 507.49
+The 95% confidence interval is 
+(-2322.547, 1307.567)
 
 ## Problem 7
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
 
 ```{r}
-res <- t.test(totchg ~ sex, data = A, var.equal = FALSE)
+res <- t.test(totchg ~ sex, data = A, var.equal = TRUE)
+res
 ```
 
 ## Problem 8
+
+
+
+
+## Problem 9
 ```{r}
 population_man = 
   population %>% 
@@ -91,6 +132,16 @@ man_mean = mean(population_man$totchg)
 woman_mean = mean(population_woman$totchg)
 mean_dif = man_mean - woman_mean
 ```
+The mean for men is `r man_mean` and for women is `r woman_mean`. The difference is `r mean_dif`.
 
+## Problem 10
 
+This question could be regarded as a binomial distribution. The number of the intervals which contain true mean difference is equal to the expectation of the binomial distribution. 
+E = np = 140 x 0.95 = 133
+About 133 students' intervals contain the true population mean difference.
 
+```{r}
+p140 = dbinom(140, size=140, prob=0.95)
+```
+
+the probability that all 140 will contain the true population mean difference is `r p140`
