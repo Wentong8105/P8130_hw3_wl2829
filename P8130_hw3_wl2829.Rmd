@@ -98,7 +98,7 @@ A_women =
 t.test(A_men$totchg, A_women$totchg, alternative = "two.sided", var.equal = TRUE)
 ```
 The difference between the means is 
-7449.33 - 6941.84 = 507.49
+6941.84 - 7449.33 = -507.49
 The 95% confidence interval is 
 (-2322.547, 1307.567)
 
@@ -115,7 +115,7 @@ res
 ```
 
 ## Problem 8
-
+We use the CE data from HSCRC to explore the distribution of procedure costs across a population of procedures conducted in Maryland for the period 1990 through 1995. We draw a random sample without replacement of 200 observations (100 men and 100 women) from the entire CE data. According to the sample analysis, the average CE cost for men is 6941.84 and the average CE cost for women is 7449.33. It can be shown that the CE cost for women has higher variation than men, according to the test result. So the data of women has a greater degree of dispersion. Meanwhile, we are 95% confident that the difference of the mean CE cost falls between (-2322.547, 1307.567). However, although the difference exist, the average cost are not statistically different since the high variation within the samples. In summary, the distribution of CE cost of the men is the same with the women.
 
 
 
@@ -132,7 +132,7 @@ man_mean = mean(population_man$totchg)
 woman_mean = mean(population_woman$totchg)
 mean_dif = man_mean - woman_mean
 ```
-The mean for men is `r man_mean` and for women is `r woman_mean`. The difference is `r mean_dif`.
+The mean for men is `r man_mean` and for women is `r woman_mean`. The difference is `r mean_dif`. The difference is in the 95% CI (-2322.547, 1307.567).
 
 ## Problem 10
 
